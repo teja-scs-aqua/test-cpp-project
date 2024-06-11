@@ -1,0 +1,33 @@
+#!/bin/sh
+#
+# Author: Aaron Voisine <aaron@voisine.org>
+# Inkscape Modifications: Michael Wybrow <mjwybrow@users.sourceforge.net>
+# K-3D Modifications: Timothy M. Shead <tshead@k-3d.com>
+
+echo "INFO: Starting $0"
+
+K3D_BUNDLE="`echo "$0" | sed -e 's/\/Contents\/MacOS\/K-3D//'`"
+K3D_RESOURCES="$K3D_BUNDLE/Contents/Resources"
+K3D_TEMP="/tmp/k3d/$(id -ru)"
+K3D_ETC="$K3D_TEMP/etc"
+K3D_PANGO_RC_FILE="$K3D_ETC/pango/pangorc"
+
+rm -rf "$K3D_TEMP"
+mkdir -p "$K3D_ETC/pango"
+
+sed -e 's|/opt/local/etc|'"$K3D_ETC|g" "$K3D_RESOURCES/etc/pango/pangorc" > "$K3D_ETC/pango/pangorc"
+sed -e 's|/opt/local|\"'"$K3D_RESOURCES|g" -e "s/\.so/.so\"/g" "$K3D_RESOURCES/etc/pango/pango.modules" > "$K3D_ETC/pango/pango.modules"
+sed -e 's|/opt/local|'"$K3D_RESOURCES|g" -e "s/\.so/.so\"/g" "$K3D_RESOURCES/etc/gtk-2.0/gdk-pixbuf.loaders" > "$K3D_ETC/gdk-pixbuf.loaders"
+cp -f "$K3D_RESOURCES/etc/pango/pangox.aliases" "$K3D_ETC/pango/pangox.aliases"
+
+export "FONTCONFIG_PATH=$K3D_RESOURCES/etc/fonts"
+export "GDK_PIXBUF_MODULE_FILE=$K3D_ETC/gdk-pixbuf.loaders"
+export "GTK_PATH=$K3D_RESOURCES/lib/gtk-2.0"
+export "PANGO_RC_FILE=$K3D_PANGO_RC_FILE"
+export "PATH=$K3D_RESOURCES/bin:$PATH"
+
+export
+exec "$K3D_RESOURCES/bin/k3d" "--log-level=debug" "--plugins=$K3D_RESOURCES/lib/k3d/plugins" "--share=$K3D_RESOURCES/share/k3d" "--ui=$K3D_RESOURCES/lib/k3d/plugins/k3d-ngui.module"
+
+echo "INFO: Finishing $0"
+

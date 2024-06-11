@@ -1,0 +1,13 @@
+FIND_PROGRAM(ASTYLE_COMMAND
+	NAMES astyle
+	DOC "Path to the Artistic Style source-code formatter."
+	)
+
+IF(ASTYLE_COMMAND)
+	CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/k3d-style.in ${CMAKE_CURRENT_BINARY_DIR}/k3d-style @ONLY)
+
+	EXECUTE_PROCESS(
+		COMMAND chmod u+x ${CMAKE_CURRENT_BINARY_DIR}/k3d-style
+		)
+ENDIF(ASTYLE_COMMAND)
+

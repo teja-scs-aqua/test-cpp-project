@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Type=Application
+Name=K-3D
+GenericName=3D modeling and animation software
+Comment=Free-as-in-freedom 3D modeling and animation software
+TryExec=@CMAKE_INSTALL_PREFIX@/bin/k3d
+Exec=@CMAKE_INSTALL_PREFIX@/bin/k3d
+Categories=Graphics;3DGraphics
+Icon=@CMAKE_INSTALL_PREFIX@/share/k3d/icons/k3d.png
+Terminal=false
